@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
     public UnityEvent Interact;
     private Vector2 mousePosition;
+
+    private GraphicRaycaster m_Raycaster;
+    private PointerEventData m_PointerEventData;
+    private EventSystem m_EventSystem;
+
+    [SerializeField] private GameObject cursorObject;
 
     public void OnUse()
     {
@@ -19,13 +27,35 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void SwapBack()
-    {
-
-    }
-
     public void OnCursorMove(InputValue value)
     {
         mousePosition = value.Get<Vector2>();
+
+        PointerEventData m_PointerEventData = new PointerEventData(m_EventSystem);
+        m_PointerEventData.position = value.Get<Vector2>();
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(m_PointerEventData, results);
+
+        for (int i = 0; i < results.Count; i++)
+        {
+            if (results[i].gameObject.CompareTag("Tile"))
+            {
+                cursorObject.transform.localScale = new Vector3(1, 1, 1);
+
+                RectTransform cursorRect = cursorObject.GetComponent<RectTransform>();
+                RectTransform resultsTransform = results[i].gameObject.GetComponent<RectTransform>();
+
+                Vector3 cursorPosition = new Vector3(resultsTransform.localPosition.x + cursorRect.sizeDelta.x * 0.5f,
+                                resultsTransform.localPosition.y + cursorRect.sizeDelta.y * 0.5f);
+
+                cursorRect.localPosition = cursorPosition;
+
+                break;
+            }
+            else
+            {
+                cursorObject.transform.localScale = Vector3.zero;
+            }
+        }
     }
 }
