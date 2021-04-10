@@ -29,6 +29,8 @@ public class Tile : MonoBehaviour
     {
         GetComponent<Image>().sprite = sprite;
         type = tileType;
+
+        isSet = true;
     }
 
     public Sprite GetSprite()

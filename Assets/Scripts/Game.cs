@@ -40,6 +40,11 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        SelectRandomTile();
+    }
+
+    public void SelectRandomTile()
+    {
         selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count);
         selectionSprite = Game.Instance.typeToSprite[selectionType];
         selectionImage.sprite = selectionSprite;
