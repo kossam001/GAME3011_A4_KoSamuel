@@ -52,8 +52,8 @@ public class Tile : MonoBehaviour
             Vector3 parentScale = transform.parent.localScale;
             Vector3 worldScale = transform.parent.parent.localScale;
 
-            Vector2 origin = new Vector2(rect.position.x + parentScale.x * worldScale.x * rect.sizeDelta.x * 0.5f, 
-                                         rect.position.y + parentScale.y * worldScale.y * rect.sizeDelta.y * 0.5f);
+            Vector2 origin = new Vector2(rect.position.x, 
+                                         rect.position.y);
 
             Debug.DrawRay(origin, transform.rotation * direction * rect.sizeDelta.x * worldScale.x * parentScale.x, Color.green);
         }

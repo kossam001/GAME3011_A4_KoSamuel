@@ -54,8 +54,8 @@ public class Board : MonoBehaviour
                 // Reset scale that is set by canvas scaler
                 rectTransform.localScale = new Vector3(1, 1, 1);
 
-                rectTransform.localPosition = new Vector2(x * rectTransform.rect.width - boardRect.rect.width * 0.5f,
-                                                          y * rectTransform.rect.height - boardRect.rect.height * 0.5f);
+                rectTransform.localPosition = new Vector2(x * rectTransform.rect.width - rectTransform.rect.width * 0.5f * (columns - 1),
+                                                          y * rectTransform.rect.height - rectTransform.rect.height * 0.5f * (rows - 1));
             }
         }
     }

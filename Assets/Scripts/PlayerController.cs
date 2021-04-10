@@ -60,8 +60,8 @@ public class PlayerController : MonoBehaviour
                 RectTransform cursorRect = cursorObject.GetComponent<RectTransform>();
                 RectTransform resultsTransform = results[i].gameObject.GetComponent<RectTransform>();
 
-                Vector3 cursorPosition = new Vector3(resultsTransform.localPosition.x + cursorRect.sizeDelta.x * 0.5f,
-                                resultsTransform.localPosition.y + cursorRect.sizeDelta.y * 0.5f);
+                Vector3 cursorPosition = new Vector3(resultsTransform.localPosition.x,
+                                                     resultsTransform.localPosition.y);
 
                 cursorRect.localPosition = cursorPosition;
 
