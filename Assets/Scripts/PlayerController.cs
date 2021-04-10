@@ -24,7 +24,20 @@ public class PlayerController : MonoBehaviour
 
     public void OnClick(InputValue button)
     {
+        PointerEventData m_PointerEventData = new PointerEventData(m_EventSystem);
+        m_PointerEventData.position = mousePosition;
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(m_PointerEventData, results);
 
+        for (int i = 0; i < results.Count; i++)
+        {
+            if (results[i].gameObject.CompareTag("Tile") && !results[i].gameObject.GetComponent<Tile>().isSet)
+            {
+                Tile tile = results[i].gameObject.GetComponent<Tile>();
+
+                tile.Set(cursorObject.GetComponent<Tile>().GetSprite(), cursorObject.GetComponent<Tile>().type);
+            }
+        }
     }
 
     public void OnCursorMove(InputValue value)
@@ -38,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < results.Count; i++)
         {
-            if (results[i].gameObject.CompareTag("Tile"))
+            if (results[i].gameObject.CompareTag("Tile") && !results[i].gameObject.GetComponent<Tile>().isSet)
             {
                 cursorObject.transform.localScale = new Vector3(1, 1, 1);
 

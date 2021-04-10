@@ -396,6 +396,10 @@ MonoBehaviour:
   - {fileID: -4684333735789482159, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
   - {fileID: -8377130690987618698, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
   - {fileID: 7223950226953391895, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
+  selectionImage: {fileID: 1926282100}
+  selectionSprite: {fileID: 0}
+  selectionType: 0
+  cursorTile: {fileID: 1574650218}
 --- !u!4 &373714082
 Transform:
   m_ObjectHideFlags: 0
@@ -422,10 +426,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ec5feaa27acd242b8cdccf37a0a5d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionImage: {fileID: 1926282100}
-  selectionSprite: {fileID: 0}
-  selectionType: 0
-  cursorImage: {fileID: 1574650215}
 --- !u!1 &834532932
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,6 +935,7 @@ GameObject:
   - component: {fileID: 1574650217}
   - component: {fileID: 1574650216}
   - component: {fileID: 1574650215}
+  - component: {fileID: 1574650218}
   m_Layer: 5
   m_Name: Cursor
   m_TagString: Untagged
@@ -999,6 +1000,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1574650218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574650214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af319d3f7f62084a9cc72388e090f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSet: 0
 --- !u!1 &1926282098
 GameObject:
   m_ObjectHideFlags: 0

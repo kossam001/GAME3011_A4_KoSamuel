@@ -15,6 +15,13 @@ public class Game : MonoBehaviour
     public List<Sprite> tileSprites;
     public Dictionary<TileType, Sprite> typeToSprite = new Dictionary<TileType, Sprite>();
 
+    [Header("Tile Selection")]
+    public Image selectionImage;
+    [HideInInspector] public Sprite selectionSprite;
+    [HideInInspector] public TileType selectionType;
+
+    public Tile cursorTile;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -33,7 +40,11 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count);
+        selectionSprite = Game.Instance.typeToSprite[selectionType];
+        selectionImage.sprite = selectionSprite;
 
+        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType);
     }
 
     private void Update()
