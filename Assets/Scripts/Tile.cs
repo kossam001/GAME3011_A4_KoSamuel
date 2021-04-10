@@ -29,11 +29,12 @@ public class Tile : MonoBehaviour
         tileAngle = 0;
     }
 
-    public void Set(Sprite sprite, TileType tileType, Vector3[] connections)
+    public void Set(Sprite sprite, TileType tileType, Vector3[] connections, Quaternion rotation)
     {
         GetComponent<Image>().sprite = sprite;
         type = tileType;
         connectionDirections = connections;
+        transform.rotation = rotation;
 
         isSet = true;
     }
@@ -54,7 +55,7 @@ public class Tile : MonoBehaviour
             Vector2 origin = new Vector2(rect.position.x + parentScale.x * worldScale.x * rect.sizeDelta.x * 0.5f, 
                                          rect.position.y + parentScale.y * worldScale.y * rect.sizeDelta.y * 0.5f);
 
-            Debug.DrawRay(origin, direction * rect.sizeDelta.x * worldScale.x * parentScale.x, Color.green);
+            Debug.DrawRay(origin, transform.rotation * direction * rect.sizeDelta.x * worldScale.x * parentScale.x, Color.green);
         }
     }
 }

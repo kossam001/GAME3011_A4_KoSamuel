@@ -60,7 +60,7 @@ public class Game : MonoBehaviour
         selectionSprite = Game.Instance.typeToSprite[selectionType];
         selectionImage.sprite = selectionSprite;
 
-        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType, typeToConnections[selectionType]);
+        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
     }
 
     private void Update()
