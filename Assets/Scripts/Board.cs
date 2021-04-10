@@ -50,11 +50,12 @@ public class Board : MonoBehaviour
                 board[x, y].transform.SetParent(boardTransform);
 
                 RectTransform rectTransform = board[x, y].GetComponent<RectTransform>();
-                rectTransform.localPosition = new Vector2(x * rectTransform.rect.width - boardRect.rect.width * 0.5f,
-                                                          y * rectTransform.rect.height - boardRect.rect.height * 0.5f);
 
                 // Reset scale that is set by canvas scaler
                 rectTransform.localScale = new Vector3(1, 1, 1);
+
+                rectTransform.localPosition = new Vector2(x * rectTransform.rect.width - boardRect.rect.width * 0.5f,
+                                                          y * rectTransform.rect.height - boardRect.rect.height * 0.5f);
             }
         }
     }

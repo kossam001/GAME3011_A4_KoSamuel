@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
             {
                 Tile tile = results[i].gameObject.GetComponent<Tile>();
 
-                tile.Set(cursorObject.GetComponent<Tile>().GetSprite(), cursorObject.GetComponent<Tile>().type);
+                tile.Set(cursorObject.GetComponent<Tile>().GetSprite(), cursorObject.GetComponent<Tile>().type, cursorObject.GetComponent<Tile>().connectionDirections);
 
                 Game.Instance.SelectRandomTile();
             }

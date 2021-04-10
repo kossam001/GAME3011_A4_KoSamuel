@@ -1013,6 +1013,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSet: 0
+  data: {fileID: 0}
+  connectionDirections: []
 --- !u!1 &1926282098
 GameObject:
   m_ObjectHideFlags: 0

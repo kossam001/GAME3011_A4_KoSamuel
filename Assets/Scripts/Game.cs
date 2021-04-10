@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
 
     public List<Sprite> tileSprites;
     public Dictionary<TileType, Sprite> typeToSprite = new Dictionary<TileType, Sprite>();
+    public Dictionary<TileType, Vector3[]> typeToConnections = new Dictionary<TileType, Vector3[]>();
 
     [Header("Tile Selection")]
     public Image selectionImage;
@@ -36,6 +37,16 @@ public class Game : MonoBehaviour
         {
             typeToSprite[tileTypes[i]] = tileSprites[i];
         }
+
+        InitializeConnections();
+    }
+
+    private void InitializeConnections()
+    {
+        typeToConnections[TileType.Quad] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
+        typeToConnections[TileType.Angle] = new Vector3[] {new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
+        typeToConnections[TileType.Straight] = new Vector3[] {new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
+        typeToConnections[TileType.T] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
     }
 
     private void Start()
@@ -49,7 +60,7 @@ public class Game : MonoBehaviour
         selectionSprite = Game.Instance.typeToSprite[selectionType];
         selectionImage.sprite = selectionSprite;
 
-        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType);
+        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType, typeToConnections[selectionType]);
     }
 
     private void Update()
