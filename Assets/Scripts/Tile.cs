@@ -10,6 +10,7 @@ public enum TileType
     Angle,
     T,
     Quad,
+    Node,
 }
 
 public class Tile : MonoBehaviour
@@ -17,7 +18,8 @@ public class Tile : MonoBehaviour
     public TileType type { get; private set; }
     private float tileAngle;
 
-    [HideInInspector] public bool isSet;
+    public bool isSet;
+    public bool isActivated;
 
     public TileData data;
 
@@ -37,8 +39,6 @@ public class Tile : MonoBehaviour
         transform.rotation = rotation;
 
         isSet = true;
-
-        CheckConnection();
     }
 
     public Sprite GetSprite()
@@ -46,7 +46,13 @@ public class Tile : MonoBehaviour
         return GetComponent<Image>().sprite;
     }
 
-    private void CheckConnection()
+    public void ActivateTile()
+    {
+        GetComponent<Image>().color = Color.green;
+        isActivated = true;
+    }
+
+    public void CheckConnection()
     {
         foreach (Vector3 direction in connectionDirections)
         {
@@ -57,6 +63,28 @@ public class Tile : MonoBehaviour
             Vector2 origin = new Vector2(rect.position.x, rect.position.y);
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(origin, transform.rotation * direction, rect.sizeDelta.x * worldScale.x * parentScale.x);
+
+            foreach (RaycastHit2D hit in hits)
+            {
+                GameObject hitObject = hit.collider.gameObject;
+
+                if (!ReferenceEquals(hitObject, gameObject) && hitObject.CompareTag("Tile") && hitObject.GetComponent<Tile>().isSet)
+                {
+                    Tile tile = hitObject.GetComponent<Tile>();
+
+                    // Adjacent tile is activated
+                    if (tile.isActivated && !isActivated)
+                    {
+                        ActivateTile();
+                        CheckConnection();
+                    }
+                    else if (!tile.isActivated && isActivated)
+                    {
+                        tile.ActivateTile();
+                        tile.CheckConnection();
+                    }
+                }
+            }
         }
     }
 

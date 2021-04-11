@@ -396,6 +396,7 @@ MonoBehaviour:
   - {fileID: -4684333735789482159, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
   - {fileID: -8377130690987618698, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
   - {fileID: 7223950226953391895, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
+  - {fileID: -6833445872158455971, guid: 11eb1c7cc2919094aad86012b79c7d4d, type: 3}
   selectionImage: {fileID: 1926282100}
   selectionSprite: {fileID: 0}
   selectionType: 0
@@ -779,9 +780,9 @@ GameObject:
   - component: {fileID: 1549505775}
   - component: {fileID: 1549505774}
   - component: {fileID: 1549505773}
-  - component: {fileID: 1549505777}
   - component: {fileID: 1549505779}
   - component: {fileID: 1549505778}
+  - component: {fileID: 1549505777}
   m_Layer: 5
   m_Name: Board
   m_TagString: Untagged
@@ -886,6 +887,7 @@ MonoBehaviour:
   columns: 12
   tilePrefab: {fileID: 5879298982896199262, guid: 7ad6546cb033f6047bec0fbf70526f8a, type: 3}
   boardTransform: {fileID: 114542894}
+  numNodes: 2
 --- !u!114 &1549505778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,6 +1015,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSet: 0
+  isActivated: 0
   data: {fileID: 0}
   connectionDirections: []
 --- !u!1 &1926282098

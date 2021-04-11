@@ -44,6 +44,7 @@ public class Game : MonoBehaviour
     private void InitializeConnections()
     {
         typeToConnections[TileType.Quad] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
+        typeToConnections[TileType.Node] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
         typeToConnections[TileType.Angle] = new Vector3[] {new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
         typeToConnections[TileType.Straight] = new Vector3[] {new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
         typeToConnections[TileType.T] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
@@ -56,11 +57,12 @@ public class Game : MonoBehaviour
 
     public void SelectRandomTile()
     {
-        selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count);
+        // Last one is a fixed node
+        selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count-1);
         selectionSprite = Game.Instance.typeToSprite[selectionType];
         selectionImage.sprite = selectionSprite;
 
-        cursorTile.GetComponent<Tile>().Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
+        cursorTile.Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
     }
 
     private void Update()
