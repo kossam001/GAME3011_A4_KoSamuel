@@ -37,11 +37,27 @@ public class Tile : MonoBehaviour
         transform.rotation = rotation;
 
         isSet = true;
+
+        CheckConnection();
     }
 
     public Sprite GetSprite()
     {
         return GetComponent<Image>().sprite;
+    }
+
+    private void CheckConnection()
+    {
+        foreach (Vector3 direction in connectionDirections)
+        {
+            RectTransform rect = GetComponent<RectTransform>();
+            Vector3 parentScale = transform.parent.localScale;
+            Vector3 worldScale = transform.parent.parent.localScale;
+
+            Vector2 origin = new Vector2(rect.position.x, rect.position.y);
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(origin, transform.rotation * direction, rect.sizeDelta.x * worldScale.x * parentScale.x);
+        }
     }
 
     private void Update()
@@ -52,8 +68,7 @@ public class Tile : MonoBehaviour
             Vector3 parentScale = transform.parent.localScale;
             Vector3 worldScale = transform.parent.parent.localScale;
 
-            Vector2 origin = new Vector2(rect.position.x, 
-                                         rect.position.y);
+            Vector2 origin = new Vector2(rect.position.x, rect.position.y);
 
             Debug.DrawRay(origin, transform.rotation * direction * rect.sizeDelta.x * worldScale.x * parentScale.x, Color.green);
         }
