@@ -41,6 +41,16 @@ public class Tile : MonoBehaviour
         isSet = true;
     }
 
+    public void Copy(Tile tile)
+    {
+        GetComponent<Image>().sprite = tile.GetSprite();
+        type = tile.type;
+        connectionDirections = tile.connectionDirections;
+        transform.rotation = tile.transform.rotation;
+
+        isSet = true;
+    }
+
     public Sprite GetSprite()
     {
         return GetComponent<Image>().sprite;
