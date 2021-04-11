@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
     public Image selectionImage;
     [HideInInspector] public Sprite selectionSprite;
     [HideInInspector] public TileType selectionType;
+    [HideInInspector] public Quaternion selectionAngle;
 
     public Tile cursorTile;
 
@@ -52,22 +53,25 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count - 1);
+        selectionSprite = Game.Instance.typeToSprite[selectionType];
+        selectionImage.sprite = selectionSprite;
+        selectionAngle = Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3));
+
         SelectRandomTile();
     }
 
     public void SelectRandomTile()
     {
+        cursorTile.Set(selectionSprite, selectionType, typeToConnections[selectionType], selectionAngle);
+
         // Last one is a fixed node
         selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count-1);
         selectionSprite = Game.Instance.typeToSprite[selectionType];
         selectionImage.sprite = selectionSprite;
+        selectionAngle = Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3));
 
-        cursorTile.Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
-    }
-
-    private void Update()
-    {
-
+        selectionImage.gameObject.transform.rotation = selectionAngle;
     }
 
     public void LoadScene(string sceneName)
