@@ -16,8 +16,6 @@ public class Board : MonoBehaviour
     public Transform boardTransform;
     public Tile[,] board;
 
-    public int numNodes = 2;
-
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -25,11 +23,9 @@ public class Board : MonoBehaviour
 
         else
             instance = this;
-
-        InitializeBoard();
     }
 
-    private void InitializeBoard()
+    public void InitializeBoard()
     {
         board = new Tile[columns, rows];
 
@@ -61,15 +57,22 @@ public class Board : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < numNodes; i++)
+        for (int i = 0; i < Game.Instance.numNodes; i++)
         {
             int randY = Random.Range(0, rows);
             int randX = Random.Range(0, columns);
 
-            board[randX, randY].Set(Game.Instance.typeToSprite[TileType.Node], TileType.Node, Game.Instance.typeToConnections[TileType.Node], transform.rotation);
+            if (!board[randX, randY].isSet)
+            {
+                board[randX, randY].Set(Game.Instance.typeToSprite[TileType.Node], TileType.Node, Game.Instance.typeToConnections[TileType.Node], Quaternion.identity);
 
-            if (i == 0)
-                board[randX, randY].ActivateTile();
+                if (i == 0)
+                    board[randX, randY].ActivateTile();
+            }
+            else
+            {
+                i--;
+            }
         }
     }
 }

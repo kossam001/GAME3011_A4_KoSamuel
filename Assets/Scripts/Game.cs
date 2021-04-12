@@ -14,14 +14,15 @@ public class Game : MonoBehaviour
 
     public List<Sprite> tileSprites;
     public Dictionary<TileType, Sprite> typeToSprite = new Dictionary<TileType, Sprite>();
-    public Dictionary<TileType, Vector3[]> typeToConnections = new Dictionary<TileType, Vector3[]>();
+    public Dictionary<TileType, List<Vector3>> typeToConnections = new Dictionary<TileType, List<Vector3>>();
 
     [Header("Tile Selection")]
     public List<Tile> selectionTiles;
-    [HideInInspector] public List<Sprite> selectionSprite;
-    [HideInInspector] public List<TileType> selectionType;
-    [HideInInspector] public List<Quaternion> selectionAngle;
 
+    public Board gameBoard;
+    public GameObject startingPanel;
+
+    public int numNodes = 2;
     public Tile cursorTile;
 
     private void Awake()
@@ -44,23 +45,11 @@ public class Game : MonoBehaviour
 
     private void InitializeConnections()
     {
-        typeToConnections[TileType.Quad] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
-        typeToConnections[TileType.Node] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
-        typeToConnections[TileType.Angle] = new Vector3[] {new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
-        typeToConnections[TileType.Straight] = new Vector3[] {new Vector3(0, 1, 0), new Vector3(0, -1, 0) };
-        typeToConnections[TileType.T] = new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, -1, 0) };
-    }
-
-    private void Start()
-    {
-        for (int i = 0; i < selectionTiles.Count; i++)
-        {
-            TileType selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count - 1);
-            Sprite selectionSprite = Game.Instance.typeToSprite[selectionType];
-            selectionTiles[i].Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
-        }
-
-        SelectRandomTile();
+        typeToConnections[TileType.Quad] = new List<Vector3>(new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) });
+        typeToConnections[TileType.Node] = new List<Vector3>(new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, -1, 0) });
+        typeToConnections[TileType.Angle] = new List<Vector3>(new Vector3[] {new Vector3(-1, 0, 0), new Vector3(0, -1, 0) });
+        typeToConnections[TileType.Straight] = new List<Vector3>(new Vector3[] {new Vector3(0, 1, 0), new Vector3(0, -1, 0) });
+        typeToConnections[TileType.T] = new List<Vector3>(new Vector3[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, -1, 0) });
     }
 
     public void SelectRandomTile()
@@ -76,7 +65,12 @@ public class Game : MonoBehaviour
         }
 
         // Randomize the last panel
-        selectionTiles[selectionTiles.Count - 1].Set(selectionSprite, selectionType, typeToConnections[selectionType], Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3)));
+        Quaternion randomRotation = Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3));
+        List<Vector3> rotatedDirections = new List<Vector3>();
+        foreach (Vector3 directions in typeToConnections[selectionType])
+            rotatedDirections.Add(randomRotation * directions);
+
+        selectionTiles[selectionTiles.Count - 1].Set(selectionSprite, selectionType, rotatedDirections, randomRotation);
     }
 
     public void LoadScene(string sceneName)
@@ -84,18 +78,60 @@ public class Game : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
-    public void SetEasy()
+    public void SetDifficulty(int difficultyLevel)
     {
-
+        switch (difficultyLevel)
+        {
+            case 0:
+                numNodes = 2;
+                break;
+            case 1:
+                numNodes = 3;
+                break;
+            case 2:
+                numNodes = 4;
+                break;
+        }
     }
 
-    public void SetMedium()
+    public void SetPlayerSkill(int playerLevel)
     {
-
+        switch (playerLevel)
+        {
+            case 0:
+                for (int i = selectionTiles.Count - 1; i > 0; i--)
+                {
+                    selectionTiles[i].gameObject.SetActive(false);
+                    selectionTiles.RemoveAt(selectionTiles.Count - i);
+                }
+                break;
+            case 1:
+                selectionTiles[selectionTiles.Count - 1].gameObject.SetActive(false);
+                selectionTiles.RemoveAt(selectionTiles.Count - 1);
+                break;
+            case 2:
+                break;
+        }
     }
 
-    public void SetHard()
+    public void StartGame()
     {
+        for (int i = 0; i < selectionTiles.Count; i++)
+        {
+            TileType selectionType = (TileType)UnityEngine.Random.Range(1, Game.Instance.typeToSprite.Count - 1);
+            Sprite selectionSprite = Game.Instance.typeToSprite[selectionType];
 
+            Quaternion randomRotation = Quaternion.Euler(0, 0, 90 * UnityEngine.Random.Range(0, 3));
+            List<Vector3> rotatedDirections = new List<Vector3>();
+            foreach (Vector3 directions in typeToConnections[selectionType])
+                rotatedDirections.Add(randomRotation * directions);
+
+            selectionTiles[i].Set(selectionSprite, selectionType, rotatedDirections, randomRotation);
+        }
+
+        SelectRandomTile();
+
+        startingPanel.SetActive(false);
+        gameBoard.InitializeBoard();
     }
 }
