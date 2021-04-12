@@ -23,12 +23,19 @@ public class Game : MonoBehaviour
     public GameObject startingPanel;
 
     public int numNodes = 2;
+    public int numMoves = 15;
+    public float startTimer = 30;
+    private float timer;
+
     public Tile cursorTile;
 
     public TMP_Dropdown difficultySetting;
     public TMP_Dropdown skillSetting;
     public Button winScreen;
     public Button loseScreen;
+
+    public TMP_Text timerLabel;
+    public TMP_Text movesLabel;
 
     private void Awake()
     {
@@ -111,12 +118,21 @@ public class Game : MonoBehaviour
                     selectionTiles[i].gameObject.SetActive(false);
                     selectionTiles.RemoveAt(selectionTiles.Count - 1);
                 }
+
+                numMoves = 30;
+
                 break;
             case 1:
                 selectionTiles[selectionTiles.Count - 1].gameObject.SetActive(false);
                 selectionTiles.RemoveAt(selectionTiles.Count - 1);
+
+                numMoves = 50;
+
                 break;
             case 2:
+
+                numMoves = 70;
+
                 break;
         }
     }
@@ -143,6 +159,9 @@ public class Game : MonoBehaviour
 
         startingPanel.SetActive(false);
         gameBoard.InitializeBoard();
+
+        timer = startTimer;
+        InvokeRepeating(nameof(CheckLoseCondition), 0, 0.01f);
     }
 
     public void CheckWinCondition()
@@ -152,6 +171,22 @@ public class Game : MonoBehaviour
             if (!node.isActivated) return;
         }
 
+        CancelInvoke(nameof(CheckLoseCondition));
         winScreen.gameObject.SetActive(true);
+    }
+
+    public void CheckLoseCondition()
+    {
+        timer -= Time.deltaTime;
+
+        timerLabel.text = ((int)timer).ToString();
+
+        movesLabel.text = numMoves.ToString();
+
+        if (timer <= 0 || numMoves <= 0)
+        {
+            loseScreen.gameObject.SetActive(true);
+            CancelInvoke(nameof(CheckLoseCondition));
+        }
     }
 }

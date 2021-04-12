@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
                 tile.CheckConnection();
 
                 Game.Instance.SelectRandomTile();
+
+                Game.Instance.numMoves--;
             }
         }
     }
@@ -52,6 +54,8 @@ public class PlayerController : MonoBehaviour
         m_PointerEventData.position = value.Get<Vector2>();
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(m_PointerEventData, results);
+
+        if (!cursorObject) return;
 
         for (int i = 0; i < results.Count; i++)
         {
