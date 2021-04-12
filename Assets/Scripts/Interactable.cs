@@ -16,9 +16,9 @@ public class Interactable : MonoBehaviour
 
     public void Use()
     {
-        if (SceneManager.GetSceneByName("Match3Scene").buildIndex == -1)
+        if (SceneManager.GetSceneByName("HackingScene").buildIndex == -1)
         {
-            SceneManager.LoadSceneAsync("Match3Scene");
+            SceneManager.LoadSceneAsync("HackingScene");
         }
     }
 }

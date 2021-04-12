@@ -25,6 +25,11 @@ public class Game : MonoBehaviour
     public int numNodes = 2;
     public Tile cursorTile;
 
+    public TMP_Dropdown difficultySetting;
+    public TMP_Dropdown skillSetting;
+    public Button winScreen;
+    public Button loseScreen;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -99,10 +104,12 @@ public class Game : MonoBehaviour
         switch (playerLevel)
         {
             case 0:
-                for (int i = selectionTiles.Count - 1; i > 0; i--)
+                int maxCount = selectionTiles.Count - 1;
+
+                for (int i = maxCount; i > 0; i--)
                 {
                     selectionTiles[i].gameObject.SetActive(false);
-                    selectionTiles.RemoveAt(selectionTiles.Count - i);
+                    selectionTiles.RemoveAt(selectionTiles.Count - 1);
                 }
                 break;
             case 1:
@@ -129,9 +136,22 @@ public class Game : MonoBehaviour
             selectionTiles[i].Set(selectionSprite, selectionType, rotatedDirections, randomRotation);
         }
 
+        SetDifficulty(difficultySetting.value);
+        SetPlayerSkill(skillSetting.value);
+
         SelectRandomTile();
 
         startingPanel.SetActive(false);
         gameBoard.InitializeBoard();
+    }
+
+    public void CheckWinCondition()
+    {
+        foreach (Tile node in gameBoard.powerNodes)
+        {
+            if (!node.isActivated) return;
+        }
+
+        winScreen.gameObject.SetActive(true);
     }
 }

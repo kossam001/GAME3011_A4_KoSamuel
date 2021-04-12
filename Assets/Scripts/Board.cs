@@ -16,6 +16,8 @@ public class Board : MonoBehaviour
     public Transform boardTransform;
     public Tile[,] board;
 
+    public List<Tile> powerNodes;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -57,6 +59,11 @@ public class Board : MonoBehaviour
             }
         }
 
+        CreatePowerNodes();
+    }
+
+    private void CreatePowerNodes()
+    {
         for (int i = 0; i < Game.Instance.numNodes; i++)
         {
             int randY = Random.Range(0, rows);
@@ -65,6 +72,8 @@ public class Board : MonoBehaviour
             if (!board[randX, randY].isSet)
             {
                 board[randX, randY].Set(Game.Instance.typeToSprite[TileType.Node], TileType.Node, Game.Instance.typeToConnections[TileType.Node], Quaternion.identity);
+
+                powerNodes.Add(board[randX, randY]);
 
                 if (i == 0)
                     board[randX, randY].ActivateTile();

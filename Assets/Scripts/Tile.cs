@@ -102,6 +102,7 @@ public class Tile : MonoBehaviour
                     {
                         ActivateTile();
                         CheckConnection();
+                        Game.Instance.CheckWinCondition();
                     }
                     // Adjacent tile is not activated but this one is
                     else if (!tile.isActivated && isActivated
@@ -110,6 +111,7 @@ public class Tile : MonoBehaviour
                     {
                         tile.ActivateTile();
                         tile.CheckConnection();
+                        Game.Instance.CheckWinCondition();
                     }
                 }
             }
